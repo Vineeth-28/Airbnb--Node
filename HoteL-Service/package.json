@@ -9,7 +9,9 @@
     "start": "node dist/server,js",
     "dev": "npx nodemon src/server.ts",
     "format": "prettier --write \"src/**/*.ts\"",
-    "format:check": "prettier --check \"src/**/*.ts\""
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "db:migrate": "cross-env NODE_OPTIONS=\"--import tsx\" sequelize-cli db:migrate",
+    "migration": "npm run db:migrate"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +27,7 @@
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^26.4.1",
+    "cross-env": "^10.1.0",
     "nodemon": "^3.1.14",
     "prettier": "^3.9.6",
     "ts-node": "^10.9.2",
