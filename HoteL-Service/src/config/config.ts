@@ -1,31 +1,35 @@
 import dotenv from 'dotenv';
+import { DBConfig } from './index';
 dotenv.config();
 
+
+// 2. Build the structured environment configuration for Sequelize CLI
 const config = {
   development: {
-    username: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'vineet@123',
-    database: process.env.DB_NAME || 'airbnbNode',
-    host: process.env.DB_HOST || '127.0.0.1',
-    port: Number(process.env.DB_PORT) || 3306,
+    username: DBConfig.DB_USER,
+    password: DBConfig.DB_PASSWORD,
+    database: DBConfig.DB_NAME,
+    host: DBConfig.DB_HOST,
     dialect: 'mysql' as const
   },
   test: {
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
+    username: DBConfig.DB_USER,
+    password: DBConfig.DB_PASSWORD,
+    database: DBConfig.DB_NAME,
+    host: DBConfig.DB_HOST,
     dialect: 'mysql' as const
   },
   production: {
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
+    username: DBConfig.DB_USER,
+    password: DBConfig.DB_PASSWORD,
+    database: DBConfig.DB_NAME,
+    host: DBConfig.DB_HOST,
     dialect: 'mysql' as const
   }
 };
 
-// Sequelize CLI dynamically searches for both module.exports or a default object framework
+// Modern ES6 export for your server source code application flow
 export default config;
-module.exports = config; 
+
+// CommonJS backward compatibility export strictly for Sequelize CLI
+module.exports = config;
