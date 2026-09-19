@@ -11,7 +11,8 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\"",
     "db:migrate": "cross-env NODE_OPTIONS=\"--import tsx\" sequelize-cli db:migrate",
-    "migration": "npm run db:migrate"
+    "migration": "npm run db:migrate",
+    "rollback": "cross-env NODE_OPTIONS=\"--import tsx\" sequelize-cli db:migrate:undo"
   },
   "keywords": [],
   "author": "",

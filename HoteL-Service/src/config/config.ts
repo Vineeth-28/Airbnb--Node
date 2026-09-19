@@ -1,29 +1,29 @@
 import dotenv from 'dotenv';
-import { DBConfig } from './index';
+import { dbConfig } from './index';
 dotenv.config();
 
 
 // 2. Build the structured environment configuration for Sequelize CLI
 const config = {
   development: {
-    username: DBConfig.DB_USER,
-    password: DBConfig.DB_PASSWORD,
-    database: DBConfig.DB_NAME,
-    host: DBConfig.DB_HOST,
+    username: dbConfig.DB_USER,
+    password: dbConfig.DB_PASSWORD,
+    database: dbConfig.DB_NAME,
+    host: dbConfig.DB_HOST,
     dialect: 'mysql' as const
   },
   test: {
-    username: DBConfig.DB_USER,
-    password: DBConfig.DB_PASSWORD,
-    database: DBConfig.DB_NAME,
-    host: DBConfig.DB_HOST,
+    username: dbConfig.DB_USER,
+    password: dbConfig.DB_PASSWORD,
+    database: dbConfig.DB_NAME,
+    host: dbConfig.DB_HOST,
     dialect: 'mysql' as const
   },
   production: {
-    username: DBConfig.DB_USER,
-    password: DBConfig.DB_PASSWORD,
-    database: DBConfig.DB_NAME,
-    host: DBConfig.DB_HOST,
+    username: dbConfig.DB_USER,
+    password: dbConfig.DB_PASSWORD,
+    database: dbConfig.DB_NAME,
+    host: dbConfig.DB_HOST,
     dialect: 'mysql' as const
   }
 };

@@ -1,12 +1,11 @@
 import dotenv from 'dotenv';
-import { string } from 'zod';
 
 type serverConfig = {
   PORT: number;
 };
 
 type DBConfig = {
-  DB_DATABASE: any;
+  DB_DATABASE: string;
   DB_HOST: string;
   DB_USER: string;
   DB_PASSWORD: string;
@@ -14,6 +13,7 @@ type DBConfig = {
 };
 
 function loadenv() {
+  dotenv.config(); // Fixed: Added actual execution of dotenv
   console.log('Environment variables loaded successfully');
 }
 
@@ -23,8 +23,9 @@ export const serverConfig: serverConfig = {
   PORT: process.env.PORT ? parseInt(process.env.PORT, 10) : 3000,
 };
 
-// 1. Define the internal environment configuration values
-export const DBConfig = {
+// Fixed: Cleaned up assignment syntax and added missing DB_DATABASE
+export const dbConfig: DBConfig = {
+  DB_DATABASE: process.env.DB_DATABASE || 'airbnbNode',
   DB_HOST: process.env.DB_HOST || '127.0.0.1',
   DB_USER: process.env.DB_USER || 'root',
   DB_PASSWORD: process.env.DB_PASSWORD || 'vineet@123',
