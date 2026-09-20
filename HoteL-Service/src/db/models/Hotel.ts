@@ -1,5 +1,11 @@
-import { sequelize } from "./sequelize";
-import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from "sequelize";
+import { sequelize } from './sequelize';
+import {
+  CreationOptional,
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+} from 'sequelize';
 
 class Hotel extends Model<InferAttributes<Hotel>, InferCreationAttributes<Hotel>> {
   declare id: CreationOptional<number>;
@@ -8,8 +14,8 @@ class Hotel extends Model<InferAttributes<Hotel>, InferCreationAttributes<Hotel>
   declare address: string;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
-  declare rating: number;
-  declare  ratingCount: number;
+  declare rating?: number | null; // Matches 'DEFAULT NULL' from migration
+  declare ratingCount?: number | null; // Matches 'DEFAULT NULL' from migration
 }
 
 Hotel.init(
@@ -17,42 +23,49 @@ Hotel.init(
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     location: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+      field: 'created_at', // 💡 Maps TypeScript 'createdAt' to MySQL 'created_at'
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+      field: 'updated_at', // 💡 Maps TypeScript 'updatedAt' to MySQL 'updated_at'
     },
     rating: {
-      type: DataTypes.FLOAT,
-      allowNull: false
+      type: DataTypes.DECIMAL(3, 2), // Matches DECIMAL(3,2) configuration
+      allowNull: true,
     },
     ratingCount: {
       type: DataTypes.INTEGER,
-      allowNull: false
-    }
+      allowNull: true,
+      field: 'rating_count', // 💡 Maps TypeScript 'ratingCount' to MySQL 'rating_count'
+    },
   },
   {
     sequelize: sequelize,
-    tableName: "hotels",
-    modelName: "Hotel" // Fixed: Explicitly named the model
-  }
+    tableName: 'hotels',
+    modelName: 'Hotel',
+    timestamps: true, // Tells Sequelize to handle timestamps automatically
+    underscored: true, // Enforces naming conventions to look for snake_case fields
+  },
 );
 
 export default Hotel;
