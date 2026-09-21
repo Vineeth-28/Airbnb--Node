@@ -4,7 +4,8 @@ import { getHotelByIdService } from '../services/hotel.service';
 import { updateHotelService } from '../services/hotel.service';
 import { getAllHotelsService } from '../services/hotel.service';
 import { deleteHotelService } from '../services/hotel.service';
-import {StatusCodes} from 'http-status-codes';
+import { softDeleteHotelService } from '../services/hotel.service';
+import { StatusCodes } from 'http-status-codes';
 export async function createHotelHandler(req: Request, res: Response, next: NextFunction) {
   try {
     //call the service layer
@@ -68,6 +69,21 @@ export async function deleteHotelHandler(req: Request, res: Response, next: Next
     const hotelResponse = await deleteHotelService(Number(req.params.id));
     res.status(StatusCodes.OK).json({
       message: 'Hotel deleted successfully',
+      success: true,
+      data: hotelResponse,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+export async function softDeleteHotelHandler(req: Request, res: Response, next: NextFunction) {
+  try {
+    //call the service layer
+    const hotelResponse = await softDeleteHotelService(Number(req.params.id));
+    res.status(StatusCodes.OK).json({
+      message: 'Hotel soft deleted successfully',
       success: true,
       data: hotelResponse,
     });

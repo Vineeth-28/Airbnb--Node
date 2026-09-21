@@ -14,6 +14,7 @@ class Hotel extends Model<InferAttributes<Hotel>, InferCreationAttributes<Hotel>
   declare address: string;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
+  declare deletedAt: CreationOptional<Date>;
   declare rating?: number | null; // Matches 'DEFAULT NULL' from migration
   declare ratingCount?: number | null; // Matches 'DEFAULT NULL' from migration
 }
@@ -48,6 +49,12 @@ Hotel.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
       field: 'updated_at', // 💡 Maps TypeScript 'updatedAt' to MySQL 'updated_at'
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
+      field: 'deleted_at', // 💡 Maps TypeScript 'deletedAt' to MySQL 'deleted_at'
     },
     rating: {
       type: DataTypes.DECIMAL(3, 2), // Matches DECIMAL(3,2) configuration

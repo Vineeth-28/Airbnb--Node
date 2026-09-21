@@ -54,3 +54,11 @@ export async function deleteHotel(id: number): Promise<void> {
   await hotel.destroy();
   logger.info(`Hotel Deleted ${id}`);
 }
+
+
+export async function softdelete(id: number): Promise<void> {
+  const hotel = await getHotelById(id); // Ensures hotel exists before soft deleting
+
+  await hotel.update({ deletedAt: new Date() });
+  logger.info(`Hotel Soft Deleted ${id}`);
+}
