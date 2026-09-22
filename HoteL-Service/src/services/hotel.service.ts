@@ -3,9 +3,9 @@ import {
   createHotel,
   getHotelById,
   updateHotel,
-  deleteHotel,
+  softDeleteHotel,
   getAllHotels,
-  softdelete
+  getAllHotelsWithDeleted,
 } from '../repository/hotel.repository';
 
 export async function createHotelService(hotelData: createHotelDto) {
@@ -23,17 +23,18 @@ export async function getAllHotelsService() {
   return hotels;
 }
 
-export async function deleteHotelService(id: number) {
-  const hotel = await deleteHotel(id);
-  return hotel;
-}
-
 export async function updateHotelService(id: number, updateData: updateHotelDto) {
   const hotel = await updateHotel(id, updateData);
   return hotel;
 }
 
 export async function softDeleteHotelService(id: number) {
-  const hotel = await softdelete(id);
+  const hotel = await softDeleteHotel(id);
   return hotel;
+}
+
+export async function getAllHotelsWithDeletedService() {
+  const hotels = await getAllHotelsWithDeleted();
+
+  return hotels;
 }

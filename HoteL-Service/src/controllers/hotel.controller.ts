@@ -1,16 +1,17 @@
 import { Response, Request, NextFunction } from 'express';
-import { createHotelService } from '../services/hotel.service';
-import { getHotelByIdService } from '../services/hotel.service';
-import { updateHotelService } from '../services/hotel.service';
-import { getAllHotelsService } from '../services/hotel.service';
-import { deleteHotelService } from '../services/hotel.service';
-import { softDeleteHotelService } from '../services/hotel.service';
+import {
+  createHotelService,
+  getHotelByIdService,
+  updateHotelService,
+  getAllHotelsService,
+  softDeleteHotelService,
+  getAllHotelsWithDeletedService
+} from '../services/hotel.service';
 import { StatusCodes } from 'http-status-codes';
+
 export async function createHotelHandler(req: Request, res: Response, next: NextFunction) {
   try {
-    //call the service layer
     const hotelResponse = await createHotelService(req.body);
-    //send the response
     res.status(StatusCodes.CREATED).json({
       message: 'Hotel Created successfully',
       success: true,
@@ -23,8 +24,15 @@ export async function createHotelHandler(req: Request, res: Response, next: Next
 
 export async function getHotelByIdHandler(req: Request, res: Response, next: NextFunction) {
   try {
-    //call the service layer
-    const hotelResponse = await getHotelByIdService(Number(req.params.id));
+    const hotelId = Number(req.params.id);
+    if (isNaN(hotelId)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        success: false,
+        message: 'Invalid hotel ID format. ID must be a valid number.',
+      });
+    }
+
+    const hotelResponse = await getHotelByIdService(hotelId);
     res.status(StatusCodes.OK).json({
       message: 'Hotel fetched successfully',
       success: true,
@@ -37,8 +45,15 @@ export async function getHotelByIdHandler(req: Request, res: Response, next: Nex
 
 export async function updateHotelHandler(req: Request, res: Response, next: NextFunction) {
   try {
-    //call the service layer
-    const hotelResponse = await updateHotelService(Number(req.params.id), req.body);
+    const hotelId = Number(req.params.id);
+    if (isNaN(hotelId)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        success: false,
+        message: 'Invalid hotel ID format. ID must be a valid number.',
+      });
+    }
+
+    const hotelResponse = await updateHotelService(hotelId, req.body);
     res.status(StatusCodes.OK).json({
       message: 'Hotel updated successfully',
       success: true,
@@ -51,7 +66,6 @@ export async function updateHotelHandler(req: Request, res: Response, next: Next
 
 export async function getAllHotelsHandler(req: Request, res: Response, next: NextFunction) {
   try {
-    //call the service layer
     const hotelsResponse = await getAllHotelsService();
     res.status(StatusCodes.OK).json({
       message: 'All hotels fetched successfully',
@@ -63,12 +77,19 @@ export async function getAllHotelsHandler(req: Request, res: Response, next: Nex
   }
 }
 
-export async function deleteHotelHandler(req: Request, res: Response, next: NextFunction) {
+export async function softDeleteHotelHandler(req: Request, res: Response, next: NextFunction) {
   try {
-    //call the service layer
-    const hotelResponse = await deleteHotelService(Number(req.params.id));
+    const hotelId = Number(req.params.id);
+    if (isNaN(hotelId)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        success: false,
+        message: 'Invalid hotel ID format. ID must be a valid number.',
+      });
+    }
+
+    const hotelResponse = await softDeleteHotelService(hotelId);
     res.status(StatusCodes.OK).json({
-      message: 'Hotel deleted successfully',
+      message: 'Hotel soft deleted successfully',
       success: true,
       data: hotelResponse,
     });
@@ -77,15 +98,13 @@ export async function deleteHotelHandler(req: Request, res: Response, next: Next
   }
 }
 
-
-export async function softDeleteHotelHandler(req: Request, res: Response, next: NextFunction) {
+export async function getAllHotelsWithDeletedHandler(req: Request, res: Response, next: NextFunction) {
   try {
-    //call the service layer
-    const hotelResponse = await softDeleteHotelService(Number(req.params.id));
+    const hotels = await getAllHotelsWithDeletedService();
     res.status(StatusCodes.OK).json({
-      message: 'Hotel soft deleted successfully',
+      message: 'All hotels (including deleted) fetched successfully',
       success: true,
-      data: hotelResponse,
+      data: hotels
     });
   } catch (error) {
     next(error);

@@ -14,7 +14,7 @@ class Hotel extends Model<InferAttributes<Hotel>, InferCreationAttributes<Hotel>
   declare address: string;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
-  declare deletedAt: CreationOptional<Date>;
+  declare deletedAt: CreationOptional<Date> | null; // Matches 'DEFAULT NULL' from migration
   declare rating?: number | null; // Matches 'DEFAULT NULL' from migration
   declare ratingCount?: number | null; // Matches 'DEFAULT NULL' from migration
 }
@@ -72,6 +72,7 @@ Hotel.init(
     modelName: 'Hotel',
     timestamps: true, // Tells Sequelize to handle timestamps automatically
     underscored: true, // Enforces naming conventions to look for snake_case fields
+    paranoid: true, // Enables soft deletes by using the 'deletedAt' field
   },
 );
 

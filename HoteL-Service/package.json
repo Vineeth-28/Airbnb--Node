@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "node dist/server,js",
-    "dev": "npx nodemon src/server.ts",
+    "start": "node dist/server.js",
+    "dev": "nodemon --exec tsx src/server.ts",
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\"",
     "db:migrate": "cross-env NODE_OPTIONS=\"--import tsx\" sequelize-cli db:migrate",

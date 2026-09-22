@@ -48,17 +48,18 @@ export async function updateHotel(id: number, updateData: updateHotelDto): Promi
   return hotel;
 }
 
-export async function deleteHotel(id: number): Promise<void> {
-  const hotel = await getHotelById(id); // Ensures hotel exists before deleting
+export async function softDeleteHotel(id: number): Promise<void> {
+  const hotel = await getHotelById(id);
 
-  await hotel.destroy();
-  logger.info(`Hotel Deleted ${id}`);
+  // Explicitly set the deletion timestamp so this API can never issue a
+  // hard DELETE statement.
+  await hotel.update({ deletedAt: new Date() });
+  logger.info(`Hotel soft deleted ${id}`);
 }
 
+export async function getAllHotelsWithDeleted(): Promise<Hotel[]> {
+  const hotels = await Hotel.findAll({ paranoid: false });
 
-export async function softdelete(id: number): Promise<void> {
-  const hotel = await getHotelById(id); // Ensures hotel exists before soft deleting
-
-  await hotel.update({ deletedAt: new Date() });
-  logger.info(`Hotel Soft Deleted ${id}`);
+  logger.info(`All Hotels (including deleted) Retrieved`);
+  return hotels;
 }
